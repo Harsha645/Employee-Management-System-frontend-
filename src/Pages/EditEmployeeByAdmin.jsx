@@ -1,59 +1,60 @@
 import React, { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import OAuth from "../component/OAuth";
 import CheckBox from "../component/CheckBox";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate} from "react-router-dom";
+import axios from "axios";
 
-
-export default function SignUp(props) {
-  const{loadEmployees} = props
+export default function EditEmployeeByAdmin(props) {
+  const {id,loadEmployees } = props;
+ 
 
   const navigate = useNavigate();
-  
+
   const [showPassword, setShowPassword] = useState(false);
-  
-  const [newEmployee, setNewEmployee] = useState({ status: "n/a" })
-  
   const [formData, setFormData] = useState({
+    // id:id,
     name: "",
     email: "",
-    contact_number: "",
     password: "",
-
+    contact_number: "",
   });
-
   const { name,email,contact_number, password } = formData;
-  
-  
 
   function onChange(event) {
-    // console.log(event.target.value);
     setFormData((prevState) => ({
       ...prevState,
       [event.target.id]: event.target.value,
     }));
   }
-  async function saveEmployee() {
-    event.preventDefault();
-    await axios.post("http://localhost:8081/employee/save",formData)
-    
 
-    .then(res => {
-      if (res.status === 200) {
-        toast.success("Sign up successful")
-        loadEmployees();
-       
-      }
-      navigate("/employees")
-    })
-    .catch(err => toast.error("Not save"))
-  }
+  const updateEmployee = async () => {
+    event.preventDefault();
+    console.log("kkkkk");
+    // console.log(id);
+    
+    await axios
+      .put("http://localhost:8081/employee/update-employee-by-admin/" + id, {
+        name: name,
+        email: email,
+        contact_number: contact_number,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Updated");
+          loadEmployees();
+        }
+        navigate("/employees");
+      })
+      .catch((err) => console.log(err));
+  };
+  
+  function onSubmit() {}
+
   return (
     <section>
-      <h1 className="text-4xl font-serif mt-6 text-center">Sign Up</h1>
+      <h1 className="text-4xl font-serif mt-6 text-center">Edit Employee</h1>
       <div className=" flex justify-center items-center px-6 py-16 max-w-6xl mx-auto">
         <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-6 ">
           <img
@@ -108,36 +109,17 @@ export default function SignUp(props) {
                   className="absolute right-3 top-3 text-xl cursor-pointer"
                 />
               )}
-             
-              <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg">
-                <p className="mb-6">
-                  Have an account?
-                  <Link
-                    to="/sign-in"
-                    className="text-red-500 hover:text-red-600 ml-1"
-                  >
-                    Sign in{" "}
-                  </Link>
-                </p>
-                <Link
-                  to="/forgot-password"
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  Forgot Password?{" "}
-                </Link>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white px-7 py-3 rounded font-medium uppercase text-lg shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800"
-                onClick={saveEmployee}
-              >
-                Sign Up
-              </button>
-              <div className="flex items-center my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300">
-                <p className="text-center font-semibold mx-4">OR</p>
-              </div>
-              <OAuth />
             </div>
+            <div className="justify-end mb-10">
+              <CheckBox />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white px-7 py-3 rounded font-medium uppercase text-lg shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800"
+              onClick={updateEmployee}
+            >
+              Done
+            </button>
           </form>
         </div>
       </div>

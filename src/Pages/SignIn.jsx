@@ -4,14 +4,19 @@ import { Link } from "react-router-dom";
 import OAuth from "../component/OAuth";
 
 export default function SignIn() {
-  function onChange(event) {}
+  
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const { email, password } = FormData;
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   email: "",
+  //   password: "",
+  // });
+
+  function onChange(event) {}
+
   function onSubmit() {}
-  const { email, password } = formData;
+  
   return (
     <section>
       <h1 className="text-4xl font-serif mt-6 text-center">Sign In</h1>

@@ -1,21 +1,42 @@
-import React from "react";
-import { AiFillEdit } from "react-icons/ai";
-import { AiTwotoneDelete } from "react-icons/ai";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-export default function Table() {
-    function onEdit(){
+import TableBody from "./TableBody";
 
-    }
-    function onDelete(){
+export default function Table(props) {
+  
+  const [employee, setEmployee] = useState([]);
 
-    }
+  function loadEmployees() {
+    axios
+      .get("http://localhost:8081/employee/get-all")
+      .then((res) => {
+        console.log(res.data);
+        // console.log("kkkk");
+        // console.log(res.data.title);
+
+        setEmployee(res.data.data);
+        console.log(employee);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+    loadEmployees();
+  }, []);
+
+  function onChange(event){
+
+  }
+
   return (
     <>
+    <form>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-sm text-white uppercase bg-black dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3"onChange={onChange}>
                 Emp ID
               </th>
               <th scope="col" className="px-6 py-3">
@@ -27,46 +48,29 @@ export default function Table() {
               <th scope="col" className="px-6 py-3">
                 Contact Number
               </th>
+              {/* <th scope="col" className="px-6 py-3">
+                Role
+              </th> */}
               <th scope="col" className="px-6 py-3">
                 Action
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 text-lg dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                0001
-              </th>
-              <td className="px-6 py-4">Harsha Pramod</td>
-              <td className="px-6 py-4">harshapramod19980124@gmail.com</td>
-              <td className="px-6 py-4">0719228889</td>
-              <td className="px-6 py-4 text-right">
-                <div className="flex justify-between ">
-                <button
-                  type="button"
-                  onClick={onEdit}
-                  className="flex items-center justify-center w-44 bg-green-500 text-white px-7 py-3 rounded-lg font-medium  text-xl shadow-md hover:bg-green-600 hover:scale-105 duration-200 ease-in hover:shadow-lg active:bg-green-700"
-                >
-                  <AiFillEdit className="text-2xl mr-2" />
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={onDelete}
-                  className="flex items-center justify-center w-44 bg-red-500 text-white px-7 py-3 rounded-lg font-medium  text-xl shadow-md hover:bg-red-600 hover:scale-105 duration-200 ease-in hover:shadow-lg active:bg-red-800"
-                >
-                  <AiTwotoneDelete className="text-2xl mr-2" />
-                  Delete
-                </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
+
+          {employee.map((value) => (
+            <TableBody
+              key={value.id}
+              id={value.id}
+              name={value.name}
+              email={value.email}
+              contact_number={value.contact_number}
+              role ={value.role.roleName}
+              loadEmployees={() => loadEmployees()}
+            />
+          ))}
         </table>
       </div>
+      </form>
     </>
   );
 }
