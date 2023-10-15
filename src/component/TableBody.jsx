@@ -6,11 +6,12 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function TableBody(props) {
-  const { id, name, email, contact_number, role, loadEmployees } = props;
 
+  const { id, name, email, contact_number, role, loadEmployees } = props;
   const navigate = useNavigate();
 
   const [editButton, setEditButton] = useState(true);
+  const [editId, setEditId] = useState(id);
 
   const [formData, setFormData] = useState({
     name: name,
@@ -26,45 +27,18 @@ export default function TableBody(props) {
     }));
   }
 
-  // console.log(role);
-
-  // function onEdit(prevState) {
-  //   setEditButton = !prevState;
-  // }
-  // function onUpdate() {
-  //   setEditButton = false
-  // }
-
-  const updateEmployee = async () => {
-    event.preventDefault();
-    await axios
-      .put("http://localhost:8081/employee/update-employee-by-admin/" + 2, {
-        name: name,
-        email: email,
-        contact_number: contact_number,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          toast.success("Updated");
-          loadEmployees();
-        }
-        navigate("/employees");
-      })
-      .catch((err) => console.log(err));
-  };
-
   const deleteEmployee = async () => {
     if (confirm("Are You Sure ?")) {
       await axios
-        .delete("http://localhost:8081/employee/delete-by-id/" + id)
+        .delete("http://localhost:8081/api/v1/employee/delete-by-id/" + id)
         .then((res) => {
           if (res.status === 200) {
             loadEmployees();
             toast.success("deleted");
-            
+            console.log(editId);
           }
         })
-        .catch((err) => toast.error(""));
+        .catch((err) => toast.error(err));
     }
   };
   return (
@@ -73,52 +47,19 @@ export default function TableBody(props) {
         <th
           scope="row"
           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-          id="name"
-          onChange={onChange}
-          contentEditable={!editButton}
         >
           {id}
         </th>
-        <td
-          className="px-6 py-4"
-          // id="name"
-          // onChange={onChange}
-          // value={name}
-          // contentEditable={!editButton}
-        >
-          {name}
-          {/* <input
-              type="text"
-              id="name"
-              value={name}
-              // contentEditable={true}
-              className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
-            /> */}
-        </td>
-        <td
-          className="px-6 py-4"
-          id="email"
-          onChange={onChange}
-          contentEditable={!editButton}
-        >
-          {email}
-        </td>
-        <td
-          className="px-4 py-4"
-          id="contact_number"
-          onChange={onChange}
-          // value={contact_number}
-          contentEditable={!editButton}
-        >
-          {contact_number}
-        </td>
+        <td className="px-6 py-4">{name}</td>
+        <td className="px-6 py-4">{email}</td>
+        <td className="px-4 py-4">{contact_number}</td>
         <td className="px-6 py-4 text-right">
           <div className="flex justify-between ">
             {editButton ? (
               <button
                 type="button"
                 onClick={() => {
-                  navigate("/edit-employee")
+                  navigate(`/edit-employee/${id}`);
                   // editButton && updateEmployee();
                   setEditButton((prevState) => !prevState);
                 }}

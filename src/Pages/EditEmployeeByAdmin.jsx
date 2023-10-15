@@ -6,15 +6,12 @@ import CheckBox from "../component/CheckBox";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-export default function EditEmployeeByAdmin(props) {
-  const {id,loadEmployees } = props;
+export default function EditEmployeeByAdmin() {
+  const { id } = useParams();
  
-
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    // id:id,
     name: "",
     email: "",
     password: "",
@@ -31,7 +28,7 @@ export default function EditEmployeeByAdmin(props) {
 
   const updateEmployee = async () => {
     event.preventDefault();
-    console.log("kkkkk");
+    // console.log("ok");
     // console.log(id);
     
     await axios
@@ -43,11 +40,11 @@ export default function EditEmployeeByAdmin(props) {
       .then((res) => {
         if (res.status === 200) {
           toast.success("Updated");
-          loadEmployees();
+          // loadEmployees();
         }
         navigate("/employees");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => toast.error(err));
   };
   
   function onSubmit() {}
@@ -89,27 +86,6 @@ export default function EditEmployeeByAdmin(props) {
               onChange={onChange}
               className="w-full px-4 py-2 text-xl text-gray-800 bg-white rounded transition ease-in-out mb-6"
             />
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                value={password}
-                placeholder="Password"
-                onChange={onChange}
-                className="w-full px-4 py-2 text-xl text-gray-800 bg-white rounded transition ease-in-out mb-6"
-              />
-              {showPassword ? (
-                <AiFillEye
-                  onClick={() => setShowPassword((prevState) => !prevState)}
-                  className="absolute right-3 top-3 text-xl cursor-pointer"
-                />
-              ) : (
-                <AiFillEyeInvisible
-                  onClick={() => setShowPassword((prevState) => !prevState)}
-                  className="absolute right-3 top-3 text-xl cursor-pointer"
-                />
-              )}
-            </div>
             <div className="justify-end mb-10">
               <CheckBox />
             </div>

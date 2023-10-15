@@ -19,7 +19,7 @@ function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/employees" element={<EmployeeDetails />} />
-          <Route path="/edit-employee" element={<EditEmployeeByAdmin />} />
+          <Route path="/edit-employee/:id" element={<EditEmployeeByAdmin />} />
         </Routes>
       </Router>
       <ToastContainer

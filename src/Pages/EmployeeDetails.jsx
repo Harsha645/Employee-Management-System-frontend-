@@ -8,17 +8,10 @@ export default function EmployeeDetails() {
   const navigate = useNavigate();
   return (
     <>
-      <div className="py-3 px-3">
-        <button
-          type="button"
-          onClick={() => navigate("/edit-employee")}
-          className="flex items-center justify-center w-52 bg-gray-600 text-white px-7 py-3 rounded font-medium uppercase text-sm shadow-md hover:bg-gray-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-black"
-        >
-          <FaUserPlus className="text-2xl mr-2" />
-          Add Employee
-        </button>
+      <div className="text-4xl font-serif mt-6 text-center">
+        Employee Information
       </div>
-      <div className="">
+      <div className="mt-4">
         <Table />
       </div>
     </>

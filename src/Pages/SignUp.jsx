@@ -38,18 +38,15 @@ export default function SignUp(props) {
   }
   async function saveEmployee() {
     event.preventDefault();
-    await axios.post("http://localhost:8081/employee/save",formData)
-    
-
+    await axios.post("http://localhost:8081/api/v1/employee/save",formData)
     .then(res => {
       if (res.status === 200) {
-        toast.success("Sign up successful")
         loadEmployees();
-       
+        toast.success("Successfully Registered");
       }
-      navigate("/employees")
+      navigate("/employees");
     })
-    .catch(err => toast.error("Not save"))
+    .catch(err => toast.error(err))
   }
   return (
     <section>
