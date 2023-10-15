@@ -34,7 +34,7 @@ export default function Header() {
             <li
               className={`cursor-pointer  py-3 text-lg font-semibold text-gray-400  ${
                 pathMathRoute("/") &&
-                "text-blue-700 border-b-[3px] border-b-red-500 hover:scale-110 duration-200 ease-in"
+                "text-blue-800 border-b-[3px] border-b-red-500 hover:scale-110 duration-200 ease-in"
               }`}
               onClick={() => navigate("/")}
             >
@@ -43,7 +43,7 @@ export default function Header() {
             <li
               className={`cursor-pointer  py-3 text-lg font-semibold text-gray-400  ${
                 pathMathRoute("/employees") &&
-                "text-blue-700 border-b-[3px] border-b-red-500 hover:scale-110 duration-200 ease-in"
+                "text-blue-800 border-b-[3px] border-b-red-500 hover:scale-110 duration-200 ease-in"
               }`}
               onClick={() => navigate("/employees")}
             >
@@ -52,7 +52,7 @@ export default function Header() {
             <li
               className={`cursor-pointer py-3 text-lg font-semibold text-gray-400  ${
                 (pathMathRoute("/sign-in") || pathMathRoute("/profile")) &&
-                "text-blue-700 border-b-[3px] border-b-red-500 hover:scale-110 duration-200 ease-in"
+                "text-blue-800 border-b-[3px] border-b-red-500 hover:scale-110 duration-200 ease-in"
               }`}
               onClick={() => navigate("/sign-in")}
             >

@@ -32,7 +32,7 @@ export default function EditEmployeeByAdmin() {
     // console.log(id);
     
     await axios
-      .put("http://localhost:8081/employee/update-employee-by-admin/" + id, {
+      .put("http://localhost:8081/api/v1/employee/update-employee-by-admin/" + id, {
         name: name,
         email: email,
         contact_number: contact_number,
