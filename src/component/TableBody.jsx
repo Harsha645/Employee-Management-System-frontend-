@@ -6,12 +6,27 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function TableBody(props) {
-
   const { id, name, email, contact_number, role, loadEmployees } = props;
   const navigate = useNavigate();
 
   const [editButton, setEditButton] = useState(true);
   const [editId, setEditId] = useState(id);
+
+  // const [newFormormData, setNewFormData] = useState({
+  //   name1: "",
+  //   email1: "",
+  //   contact_number1: "",
+  // });
+  // const { name1,email1,contact_number1,  } = newFormormData;
+  // console.log(newFormormData.name1);
+
+  function onChange(event) {
+    console.log(event.target.value);
+    setNewFormData((prevState) => ({
+      ...prevState,
+      [event.target.id]: event.target.Value,
+    }));
+  }
 
   const [formData, setFormData] = useState({
     name: name,
@@ -19,13 +34,35 @@ export default function TableBody(props) {
     contact_number: contact_number,
   });
 
-  function onChange(event) {
-    console.log(event.target.value);
-    setFormData((prevState) => ({
-      ...prevState,
-      [event.target.id]: event.target.value,
-    }));
-  }
+ 
+  
+
+
+  const updateEmployee = async () => {
+    // event.preventDefault();
+    // console.log("ok");
+    // console.log(id);
+
+    await axios
+      .put(
+        "http://localhost:8081/api/v1/employee/update-employee-by-admin/" + id,
+        {
+          name: name,
+          email: email,
+          contact_number: contact_number,
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Updated");
+          // loadEmployees();
+        }
+        navigate("/employees");
+      })
+      .catch((err) => toast.error(err));
+  };
+
+ 
 
   const deleteEmployee = async () => {
     if (confirm("Are You Sure ?")) {
@@ -47,6 +84,7 @@ export default function TableBody(props) {
         <th
           scope="row"
           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          onChange={onChange}
         >
           {id}
         </th>
@@ -60,7 +98,7 @@ export default function TableBody(props) {
                 type="button"
                 onClick={() => {
                   navigate(`/edit-employee/${id}`);
-                  // editButton && updateEmployee();
+                  editButton 
                   setEditButton((prevState) => !prevState);
                 }}
                 className="flex items-center justify-center w-44 bg-green-500 text-white px-7 py-3 rounded-lg font-medium  text-xl shadow-md hover:bg-green-600 hover:scale-105 duration-200 ease-in hover:shadow-lg active:bg-green-700"

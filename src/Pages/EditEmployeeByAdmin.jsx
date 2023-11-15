@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import OAuth from "../component/OAuth";
@@ -24,6 +24,22 @@ export default function EditEmployeeByAdmin() {
       ...prevState,
       [event.target.id]: event.target.value,
     }));
+  }
+
+  useEffect(() => {
+    getEmployee();
+  }, []);
+
+  function getEmployee() {
+    axios
+      .get("http://localhost:8081/api/v1/employee/get-by-id/" + id)
+      .then((res) => {
+        console.log(res.data.data);
+        // console.log("kkkk");
+
+        setFormData(res.data.data);
+      })
+      .catch((err) => toast.error(err));
   }
 
   const updateEmployee = async () => {

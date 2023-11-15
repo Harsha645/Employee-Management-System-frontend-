@@ -2,21 +2,46 @@ import React, { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import OAuth from "../component/OAuth";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate} from "react-router-dom";
+
+
+
 
 export default function SignIn() {
-  
   const [showPassword, setShowPassword] = useState(false);
-  const { email, password } = FormData;
-  // const [formData, setFormData] = useState({
-  //   name: "",
-  //   email: "",
-  //   password: "",
-  // });
+  const navigate = useNavigate();
 
-  function onChange(event) {}
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formData;
+
+  function onChange(event) {
+    setFormData((prevState) => ({
+      ...prevState,
+      [event.target.id]: event.target.value,
+    }));
+  }
+  async function login() {
+    event.preventDefault();
+    await axios
+      .post("http://localhost:8081/authentication", formData)
+      .then((res) => {
+        console.log(res.data.data);
+        if (res.status === 200) {
+          toast.success("Successfully Login");
+          navigate("/");
+        }
+      })
+      .catch((err) => toast.error(err));
+  }
 
   function onSubmit() {}
-  
+
   return (
     <section>
       <h1 className="text-4xl font-serif mt-6 text-center">Sign In</h1>
@@ -79,6 +104,7 @@ export default function SignIn() {
               <button
                 type="submit"
                 className="w-full bg-blue-600 text-white px-7 py-3 rounded font-medium uppercase text-lg shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800"
+                onClick={login}
               >
                 Sign in
               </button>
